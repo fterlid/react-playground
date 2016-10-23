@@ -1,2 +1,8 @@
 # IDE files
 .idea/
+
+# External Dependencies
+node_modules/
+
+# Output files and directories
+dist/
