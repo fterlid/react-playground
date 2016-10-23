@@ -1,9 +1,9 @@
 require('babel-register');
 require('babel-polyfill');
 
-const Server = require('./server/server.jsx').default;
+const SERVER = require('./server/server.jsx').default;
 const PORT = process.env.PORT || 3000;
 
-Server.listen(PORT, () => {
+SERVER.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 });
