@@ -37,6 +37,7 @@ app.use((request, response) => {
         <div id="app-container">
             ${componentHtml}
         </div>
+        <script src="http://localhost:8080/app.bundle.js"></script>
     </body>
 </html>`;
 
