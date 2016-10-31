@@ -3,10 +3,16 @@ import React from 'react';
 import ReactDomServer from 'react-dom/server';
 import { RouterContext, match } from 'react-router'
 import Routes from '../shared/routes';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import * as reducers from '../shared/reducers';
 
 const app = Express();
 
 app.use((request, response) => {
+    const reducer = combineReducers(reducers);
+    const store = createStore(reducer);
+
     match({
         routes: Routes,
         location: request.url
@@ -24,13 +30,23 @@ app.use((request, response) => {
                 .send("Not found");
         }
 
-        const componentHtml = ReactDomServer.renderToString(<RouterContext {...renderProps} />);
+        const initialComponent = (
+            <Provider store={store}>
+                <RouterContext {...renderProps} />
+            </Provider>
+        );
+
+        const componentHtml = ReactDomServer.renderToString(initialComponent);
+        const initialState = store.getState();
         const html =
 `<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <title>Isomorphic React</title>
+        <script>
+            window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+        </script>
     </head>
     <body>
         <h1>Hello, world</h1>
