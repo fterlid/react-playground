@@ -11,7 +11,7 @@ export function editTodo(id, text) {
         type: 'EDIT_TODO',
         id,
         text,
-        date: date.now()
+        date: Date.now()
     };
 }
 
