@@ -7,7 +7,8 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import * as reducers from '../shared/reducers';
 import { applyMiddleware } from 'redux';
-import promiseMiddleware   from 'lib/promiseMiddleware';
+import promiseMiddleware   from '../shared/lib/promiseMiddleware';
+import fetchComponentData from '../shared/lib/fetchComponentData';
 
 const app = Express();
 
@@ -32,16 +33,17 @@ app.use((request, response) => {
                 .send("Not found");
         }
 
-        const initialComponent = (
-            <Provider store={store}>
-                <RouterContext {...renderProps} />
-            </Provider>
-        );
+        function renderView() {
+            const initialComponent = (
+                <Provider store={store}>
+                    <RouterContext {...renderProps} />
+                </Provider>
+            );
 
-        const componentHtml = ReactDomServer.renderToString(initialComponent);
-        const initialState = store.getState();
-        const html =
-`<!DOCTYPE html>
+            const componentHtml = ReactDomServer.renderToString(initialComponent);
+            const initialState = store.getState();
+            const html =
+                `<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -58,6 +60,14 @@ app.use((request, response) => {
         <script src="http://localhost:8080/app.bundle.js"></script>
     </body>
 </html>`;
+
+            return html;
+        }
+
+        fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
+            .then(renderView)
+            .then(html => response.send(html))
+            .catch(err => response.send(err.message));
 
         return response
             .status(200)

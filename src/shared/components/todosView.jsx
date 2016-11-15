@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
+import TodoActions from '../actions/todoActions';
 
 export default class TodosView extends Component {
     constructor(props) {
         super(props);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
-    }
-
-    componentDidMount() {
-        this.props.getTodos();
     }
 
     handleDelete(e) {

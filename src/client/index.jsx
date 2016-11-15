@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import * as reducers from '../shared/reducers';
 import { fromJS } from 'immutable';
 import { applyMiddleware } from 'redux';
-import promiseMiddleware   from 'lib/promiseMiddleware';
+import promiseMiddleware   from '../shared/lib/promiseMiddleware';
 
 let initialState = window.__INITIAL_STATE__;
 
