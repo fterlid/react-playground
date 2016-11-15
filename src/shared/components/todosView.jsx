@@ -7,6 +7,10 @@ export default class TodosView extends Component {
         this.handleEdit = this.handleEdit.bind(this);
     }
 
+    componentDidMount() {
+        this.props.getTodos();
+    }
+
     handleDelete(e) {
         const id = Number(e.target.dataset.id);
 
